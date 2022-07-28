@@ -47,15 +47,11 @@ jobs:
 
       - name: 'Run PHP CodeSniffer'
         run: vendor/bin/phpcs -n -p --extensions=php ./config ./src ./tests
-        if: "${{ !phpcs-standard }}"
-        env:
-          phpcs-standard: ${{ inputs.phpcs-standard }}
+        if: "${{ !inputs.phpcs-standard }}"
 
       - name: "Run PHP CodeSniffer with standard {{ inputs.phpcs-standard }}"
         run: vendor/bin/phpcs -n -p --extensions=php --standard=${{ inputs.phpcs-standard }} ./config ./src ./tests
-        if: "${{ phpcs-standard }}"
-        env:
-          phpcs-standard: ${{ inputs.phpcs-standard }}
+        if: "${{ inputs.phpcs-standard }}"
 
   stan:
     name: 'Static code analyzer'
