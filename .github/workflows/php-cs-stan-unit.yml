@@ -49,7 +49,7 @@ jobs:
         run: vendor/bin/phpcs -n -p --extensions=php ./config ./src ./tests
         if: "${{ !inputs.phpcs-standard }}"
 
-      - name: "Run PHP CodeSniffer with standard {{ inputs.phpcs-standard }}"
+      - name: 'Run PHP CodeSniffer with specified standard'
         run: vendor/bin/phpcs -n -p --extensions=php --standard=${{ inputs.phpcs-standard }} ./config ./src ./tests
         if: "${{ inputs.phpcs-standard }}"
 
