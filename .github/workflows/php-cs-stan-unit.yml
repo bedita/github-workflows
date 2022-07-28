@@ -62,7 +62,7 @@ jobs:
         if: ${{ !steps.phpcs.outputs.phpcsstandard }}
 
       - name: 'Run PHP CodeSniffer with cake codesniffer'
-        run: vendor/bin/phpcs -n -p --extensions=php --standard=${{ inputs.phpcs-standard-cakephp }} ./config ./src ./tests
+        run: vendor/bin/phpcs -n -p --extensions=php --standard=${{ inputs.phpcs-standard }} ./config ./src ./tests
         if: ${{ steps.phpcs.outputs.phpcsstandard }}
 
   stan:
