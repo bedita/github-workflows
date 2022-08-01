@@ -24,7 +24,4 @@ on:
 jobs:
   call:
     uses: bedita/github-workflows/.github/workflows/php-cs-stan-unit.yml@main
-    #### to use specific phpcs-standard, uncomment the following 2 lines
-    # with:
-    #   phpcs-standard: "vendor/cakephp/cakephp-codesniffer/CakePHP"
 ```
