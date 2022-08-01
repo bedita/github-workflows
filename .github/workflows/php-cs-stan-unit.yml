@@ -2,10 +2,6 @@ name: 'php-cs-stan-unit'
 
 on:
   workflow_call:
-    inputs:
-      phpcs-standard:
-        required: false
-        type: string
 
 jobs:
   cs:
@@ -46,12 +42,7 @@ jobs:
         run: 'composer install --prefer-dist --no-interaction'
 
       - name: 'Run PHP CodeSniffer'
-        run: vendor/bin/phpcs -n -p --extensions=php ./config ./src ./tests
-        if: "${{ !inputs.phpcs-standard }}"
-
-      - name: 'Run PHP CodeSniffer with specified standard'
-        run: vendor/bin/phpcs -n -p --extensions=php --standard=${{ inputs.phpcs-standard }} ./config ./src ./tests
-        if: "${{ inputs.phpcs-standard }}"
+        run: vendor/bin/phpcs
 
   stan:
     name: 'Static code analyzer'
