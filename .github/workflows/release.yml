@@ -74,12 +74,12 @@ jobs:
         run: |
           echo current branch ${{ steps.branch.outputs.BRANCH }}
       - name: Exit on bad tag
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'release:major') && !contains(steps.branch.outputs.BRANCH, inputs.main-branch) }}
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'release:major') && !contains(steps.branch.outputs.BRANCH, inputs.main_branch) }}
         run: |
           echo Can't create a major release on branch ${{ steps.branch.outputs.BRANCH }}
           exit 1
       - name: Exit on bad branch
-        if: ${{ !contains(fromJson(inputs.dist-branches), steps.branch.outputs.BRANCH) }}
+        if: ${{ !contains(fromJson(inputs.dist_branches), steps.branch.outputs.BRANCH) }}
         run: |
           echo Can't create a release on branch ${{ steps.branch.outputs.BRANCH }}
           exit 1
