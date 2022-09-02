@@ -7,12 +7,10 @@ on:
         description: Main branch, in format of a string
         required: true
         type: string
-        default: 'main'
       dist_branches:
         required: true
-        description: Branches to execute on, in format of a string JSON array, i.e.
+        description: Branches to execute on, in format of a string JSON array
         type: string
-        default: '["main"]'
 
 jobs:
 
