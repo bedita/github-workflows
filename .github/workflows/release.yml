@@ -3,12 +3,12 @@ name: 'release'
 on:
   workflow_call:
     inputs:
-      main-branch:
+      main_branch:
         description: Main branch, in format of a string
         required: true
         type: string
         default: 'main'
-      dist-branches:
+      dist_branches:
         required: true
         description: Branches to execute on, in format of a string JSON array, i.e.
         type: string

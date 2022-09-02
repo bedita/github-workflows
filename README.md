@@ -43,6 +43,6 @@ jobs:
   call:
     uses: bedita/github-workflows/.github/workflows/release.yml@main
     with:
-      main-branch: 'master'
-      dist-branches: '["master", "1.x"]'
+      main_branch: 'master'
+      dist_branches: '["master", "1.x"]'
 ```
