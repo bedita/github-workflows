@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       main_branch:
-        description: Main branch, in format of a string
+        description: Main branch, in format of a string, where a new major release is allowed
         required: true
         type: string
       dist_branches:
