@@ -11,6 +11,14 @@ on:
         required: true
         description: Branches to execute on, in format of a string JSON array
         type: string
+      version_ini_path:
+        required: false
+        description: Path to version.ini file (optional)
+        type: string
+      version_ini_prefix:
+        required: false
+        description: Content version.ini file (optional)
+        type: string
 
 jobs:
 
@@ -81,6 +89,27 @@ jobs:
         run: |
           echo Can't create a release on branch ${{ steps.branch.outputs.BRANCH }}
           exit 1
+
+      - name: Create new major version file
+        if: ${{ inputs.version_ini_path != '' && contains(github.event.pull_request.labels.*.name, 'release:major') }}
+        run: |
+          echo "${{ version_ini_prefix}}${{ steps.versions.outputs.NEW_MAJOR }}" > ${{ inputs.version_ini_path }}
+
+      - name: Create new minor version file
+        if: ${{ inputs.version_ini_path != '' && contains(github.event.pull_request.labels.*.name, 'release:minor') }}
+        run: |
+          echo "${{ version_ini_prefix}}${{ steps.versions.outputs.NEW_MINOR }}" > ${{ inputs.version_ini_path }}
+
+      - name: Create new patch version file
+        if: ${{ inputs.version_ini_path != '' && contains(github.event.pull_request.labels.*.name, 'release:patch') }}
+        run: |
+          echo "${{ version_ini_prefix}}${{ steps.versions.outputs.NEW_PATCH }}" > ${{ inputs.version_ini_path }}
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        if: inputs.version_ini_path != ''
+        with:
+          commit_message: "chore: update version"
+
       - name: Create major release
         if: contains(github.event.pull_request.labels.*.name, 'release:major')
         uses: ncipollo/release-action@v1
