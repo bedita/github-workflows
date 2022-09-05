@@ -93,17 +93,17 @@ jobs:
       - name: Create new major version file
         if: ${{ inputs.version_ini_path != '' && contains(github.event.pull_request.labels.*.name, 'release:major') }}
         run: |
-          echo "${{ version_ini_prefix}}${{ steps.versions.outputs.NEW_MAJOR }}" > ${{ inputs.version_ini_path }}
+          echo "${{ inputs.version_ini_prefix }}${{ steps.versions.outputs.NEW_MAJOR }}" > ${{ inputs.version_ini_path }}
 
       - name: Create new minor version file
         if: ${{ inputs.version_ini_path != '' && contains(github.event.pull_request.labels.*.name, 'release:minor') }}
         run: |
-          echo "${{ version_ini_prefix}}${{ steps.versions.outputs.NEW_MINOR }}" > ${{ inputs.version_ini_path }}
+          echo "${{ inputs.version_ini_prefix }}${{ steps.versions.outputs.NEW_MINOR }}" > ${{ inputs.version_ini_path }}
 
       - name: Create new patch version file
         if: ${{ inputs.version_ini_path != '' && contains(github.event.pull_request.labels.*.name, 'release:patch') }}
         run: |
-          echo "${{ version_ini_prefix}}${{ steps.versions.outputs.NEW_PATCH }}" > ${{ inputs.version_ini_path }}
+          echo "${{ inputs.version_ini_prefix }}${{ steps.versions.outputs.NEW_PATCH }}" > ${{ inputs.version_ini_path }}
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         if: inputs.version_ini_path != ''
