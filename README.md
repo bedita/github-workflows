@@ -23,7 +23,7 @@ on:
 
 jobs:
   php_cs_stan_unit:
-    uses: bedita/github-workflows/.github/workflows/php-cs-stan-unit.yml@main
+    uses: bedita/github-workflows/.github/workflows/php-cs-stan-unit.yml@v1
 ```
 
 ## php-cs.yml
@@ -129,7 +129,7 @@ on:
 
 jobs:
   call:
-    uses: bedita/github-workflows/.github/workflows/release.yml@main
+    uses: bedita/github-workflows/.github/workflows/release.yml@v1
     with:
       main_branch: 'master'
       dist_branches: '["master", "1.x"]'
