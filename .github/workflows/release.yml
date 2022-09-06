@@ -84,15 +84,15 @@ jobs:
 
       - name: Setup major tag
         if: contains(github.event.pull_request.labels.*.name, 'release:major')
-        run: "echo \"RELEASE_TAG=${ steps.versions.outputs.NEW_MAJOR }\" >> $GITHUB_ENV"
+        run: "echo \"RELEASE_TAG=${{ steps.versions.outputs.NEW_MAJOR }}\" >> $GITHUB_ENV"
 
       - name: Setup minor tag
         if: contains(github.event.pull_request.labels.*.name, 'release:minor')
-        run: "echo \"RELEASE_TAG=${ steps.versions.outputs.NEW_MINOR }\" >> $GITHUB_ENV"
+        run: "echo \"RELEASE_TAG=${{ steps.versions.outputs.NEW_MINOR }}\" >> $GITHUB_ENV"
 
       - name: Setup patch tag
         if: contains(github.event.pull_request.labels.*.name, 'release:patch')
-        run: "echo \"RELEASE_TAG=${ steps.versions.outputs.NEW_PATCH }\" >> $GITHUB_ENV"
+        run: "echo \"RELEASE_TAG=${{ steps.versions.outputs.NEW_PATCH }}\" >> $GITHUB_ENV"
 
       - name: "Create release"
         uses: "actions/github-script@v6"
