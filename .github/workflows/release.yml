@@ -81,29 +81,33 @@ jobs:
         run: |
           echo Can't create a release on branch ${{ steps.branch.outputs.BRANCH }}
           exit 1
-      - name: Create major release
+
+      - name: Setup major tag
         if: contains(github.event.pull_request.labels.*.name, 'release:major')
-        uses: ncipollo/release-action@v1
-        with:
-          name: 'Release ${{ steps.versions.outputs.NEW_MAJOR }}'
-          tag: 'v${{ steps.versions.outputs.NEW_MAJOR }}'
-          commit: ${{ steps.branch.outputs.BRANCH }}
-          generateReleaseNotes: true
+        run: "echo \"RELEASE_TAG=${ steps.versions.outputs.NEW_MAJOR }\" >> $GITHUB_ENV"
 
-      - name: Create minor release
+      - name: Setup minor tag
         if: contains(github.event.pull_request.labels.*.name, 'release:minor')
-        uses: ncipollo/release-action@v1
-        with:
-          name: 'Release ${{ steps.versions.outputs.NEW_MINOR }}'
-          tag: 'v${{ steps.versions.outputs.NEW_MINOR }}'
-          commit: ${{ steps.branch.outputs.BRANCH }}
-          generateReleaseNotes: true
+        run: "echo \"RELEASE_TAG=${ steps.versions.outputs.NEW_MINOR }\" >> $GITHUB_ENV"
 
-      - name: Create patch release
+      - name: Setup patch tag
         if: contains(github.event.pull_request.labels.*.name, 'release:patch')
-        uses: ncipollo/release-action@v1
+        run: "echo \"RELEASE_TAG=${ steps.versions.outputs.NEW_PATCH }\" >> $GITHUB_ENV"
+
+      - name: "Create release"
+        uses: "actions/github-script@v6"
         with:
-          name: 'Release ${{ steps.versions.outputs.NEW_PATCH }}'
-          tag: 'v${{ steps.versions.outputs.NEW_PATCH }}'
-          commit: ${{ steps.branch.outputs.BRANCH }}
-          generateReleaseNotes: true
+          script: |
+            try {
+              await github.rest.repos.createRelease({
+                draft: false,
+                generate_release_notes: true,
+                name: process.env.RELEASE_TAG,
+                owner: context.repo.owner,
+                prerelease: false,
+                repo: context.repo.repo,
+                tag_name: process.env.RELEASE_TAG,
+              });
+            } catch (error) {
+              core.setFailed(error.message);
+            }
