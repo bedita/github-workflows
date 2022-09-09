@@ -115,6 +115,11 @@ jobs:
           echo No release tag found - ${{ env.RELEASE_VERSION }}
           exit 0
 
+      - name: Output release version
+        shell: bash
+        run: echo "::set-output name=VERSION::$(echo $RELEASE_VERSION)"
+        id: version_release
+
       - name: Create new version file
         if: inputs.version_ini_path != ''
         run: |
@@ -135,4 +140,4 @@ jobs:
           generateReleaseNotes: true
 
     outputs:
-      version: ${{ env.RELEASE_VERSION }}
+      version: ${{ steps.version_release.outputs.VERSION }}
