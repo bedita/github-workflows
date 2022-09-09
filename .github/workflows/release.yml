@@ -140,4 +140,4 @@ jobs:
           generateReleaseNotes: true
 
     outputs:
-      version: ${{ steps.version_release.outputs.VERSION }}
+      version: "${{ steps.version_release.outputs.VERSION }}"
