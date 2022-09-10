@@ -120,6 +120,10 @@ jobs:
         run: echo "::set-output name=VERSION::$(echo $RELEASE_VERSION)"
         id: version_release
 
+      - name: Debug release version
+        run: |
+          echo release version ${{ steps.version_release.outputs.VERSION }}
+      
       - name: Create new version file
         if: inputs.version_ini_path != ''
         run: |
@@ -140,4 +144,4 @@ jobs:
           generateReleaseNotes: true
 
     outputs:
-      version: "${{ steps.version_release.outputs.VERSION }}"
+      version: ${{ steps.version_release.outputs.VERSION }}
