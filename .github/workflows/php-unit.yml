@@ -30,6 +30,10 @@ jobs:
         php-version: ${{ fromJSON(inputs.php_versions) }}
 
     steps:
+
+      - name: 'Install gettext'
+        run: 'sudo apt-get install -y gettext'
+
       - name: 'Checkout current revision'
         uses: 'actions/checkout@v2'
 
