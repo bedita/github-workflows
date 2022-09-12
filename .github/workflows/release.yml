@@ -19,7 +19,10 @@ on:
         required: false
         description: Content version.ini file (optional)
         type: string
-
+    outputs:
+      version:
+        description: The final release version
+        value: ${{ jobs.release-on-push.outputs.version }}
 jobs:
 
   debug:
@@ -90,20 +93,44 @@ jobs:
           echo Can't create a release on branch ${{ steps.branch.outputs.BRANCH }}
           exit 1
 
-      - name: Create new major version file
-        if: ${{ inputs.version_ini_path != '' && contains(github.event.pull_request.labels.*.name, 'release:major') }}
+      - name: Prepare release tag env var
         run: |
-          echo "${{ inputs.version_ini_prefix }}${{ steps.versions.outputs.NEW_MAJOR }}" > ${{ inputs.version_ini_path }}
+          echo "RELEASE_VERSION=undefined" >> $GITHUB_ENV
 
-      - name: Create new minor version file
-        if: ${{ inputs.version_ini_path != '' && contains(github.event.pull_request.labels.*.name, 'release:minor') }}
+      - name: See if major release
+        if: contains(github.event.pul_request.labels.*.name, 'release:major') 
         run: |
-          echo "${{ inputs.version_ini_prefix }}${{ steps.versions.outputs.NEW_MINOR }}" > ${{ inputs.version_ini_path }}
+          echo "RELEASE_VERSION=${{ steps.versions.outputs.NEW_MAJOR }}" >> $GITHUB_ENV
 
-      - name: Create new patch version file
-        if: ${{ inputs.version_ini_path != '' && contains(github.event.pull_request.labels.*.name, 'release:patch') }}
+      - name: See if minor release
+        if: contains(github.event.pull_request.labels.*.name, 'release:minor')
         run: |
-          echo "${{ inputs.version_ini_prefix }}${{ steps.versions.outputs.NEW_PATCH }}" > ${{ inputs.version_ini_path }}
+          echo "RELEASE_VERSION=${{ steps.versions.outputs.NEW_MINOR }}" >> $GITHUB_ENV
+
+      - name: See if patch release
+        if: contains(github.event.pull_request.labels.*.name, 'release:patch')
+        run: |
+          echo "RELEASE_VERSION=${{ steps.versions.outputs.NEW_PATCH }}" >> $GITHUB_ENV
+
+      - name: Exit if no release tag is found
+        if: contains(env.RELEASE_VERSION, 'undefined')
+        run: |
+          echo No release tag found - $RELEASE_VERSION
+          exit 0
+
+      - name: Output release version
+        shell: bash
+        run: echo "::set-output name=VERSION::$(echo $RELEASE_VERSION)"
+        id: version_release
+
+      - name: Debug release version
+        run: |
+          echo release version ${{ steps.version_release.outputs.VERSION }}
+      
+      - name: Create new version file
+        if: inputs.version_ini_path != ''
+        run: |
+          echo "${{ inputs.version_ini_prefix }}$RELEASE_VERSION" > ${{ inputs.version_ini_path }}
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         if: inputs.version_ini_path != ''
@@ -111,29 +138,13 @@ jobs:
           commit_message: "chore: update version"
           branch: ${{ steps.branch.outputs.BRANCH }}
 
-      - name: Create major release
-        if: contains(github.event.pull_request.labels.*.name, 'release:major')
+      - name: Create release and tag
         uses: ncipollo/release-action@v1
         with:
-          name: 'Release ${{ steps.versions.outputs.NEW_MAJOR }}'
-          tag: 'v${{ steps.versions.outputs.NEW_MAJOR }}'
+          name: 'Release ${{ env.RELEASE_VERSION }}'
+          tag: 'v${{ env.RELEASE_VERSION }}'
           commit: ${{ steps.branch.outputs.BRANCH }}
           generateReleaseNotes: true
 
-      - name: Create minor release
-        if: contains(github.event.pull_request.labels.*.name, 'release:minor')
-        uses: ncipollo/release-action@v1
-        with:
-          name: 'Release ${{ steps.versions.outputs.NEW_MINOR }}'
-          tag: 'v${{ steps.versions.outputs.NEW_MINOR }}'
-          commit: ${{ steps.branch.outputs.BRANCH }}
-          generateReleaseNotes: true
-
-      - name: Create patch release
-        if: contains(github.event.pull_request.labels.*.name, 'release:patch')
-        uses: ncipollo/release-action@v1
-        with:
-          name: 'Release ${{ steps.versions.outputs.NEW_PATCH }}'
-          tag: 'v${{ steps.versions.outputs.NEW_PATCH }}'
-          commit: ${{ steps.branch.outputs.BRANCH }}
-          generateReleaseNotes: true
+    outputs:
+      version: ${{ steps.version_release.outputs.VERSION }}
