@@ -19,7 +19,10 @@ on:
         required: false
         description: Content version.ini file (optional)
         type: string
-
+    outputs:
+      version:
+        description: The final release version
+        value: ${{ jobs.release-on-push.outputs.version }}
 jobs:
 
   debug:
@@ -112,7 +115,7 @@ jobs:
       - name: Exit if no release tag is found
         if: contains(env.RELEASE_VERSION, 'undefined')
         run: |
-          echo No release tag found - ${{ env.RELEASE_VERSION }}
+          echo No release tag found - $RELEASE_VERSION
           exit 0
 
       - name: Output release version
@@ -120,10 +123,14 @@ jobs:
         run: echo "::set-output name=VERSION::$(echo $RELEASE_VERSION)"
         id: version_release
 
+      - name: Debug release version
+        run: |
+          echo release version ${{ steps.version_release.outputs.VERSION }}
+      
       - name: Create new version file
         if: inputs.version_ini_path != ''
         run: |
-          echo "${{ inputs.version_ini_prefix }}${{ env.RELEASE_VERSION }}" > ${{ inputs.version_ini_path }}
+          echo "${{ inputs.version_ini_prefix }}$RELEASE_VERSION" > ${{ inputs.version_ini_path }}
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         if: inputs.version_ini_path != ''
@@ -140,4 +147,4 @@ jobs:
           generateReleaseNotes: true
 
     outputs:
-      version: "${{ steps.version_release.outputs.VERSION }}"
+      version: ${{ steps.version_release.outputs.VERSION }}
