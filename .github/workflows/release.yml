@@ -116,7 +116,7 @@ jobs:
         if: contains(env.RELEASE_VERSION, 'undefined')
         run: |
           echo No release tag found - $RELEASE_VERSION
-          exit 0
+          exit 1
 
       - name: Output release version
         shell: bash
