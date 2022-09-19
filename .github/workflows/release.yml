@@ -126,7 +126,7 @@ jobs:
           echo release version ${{ steps.version_release.outputs.VERSION }}
       
       - name: Create new version file
-        if: inputs.version_ini_path != ''
+        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && inputs.version_ini_path != '' }}
         run: |
           echo "${{ inputs.version_ini_prefix }}$RELEASE_VERSION" > ${{ inputs.version_ini_path }}
 
