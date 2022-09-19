@@ -114,9 +114,7 @@ jobs:
 
       - name: Exit if no release tag is found
         if: contains(env.RELEASE_VERSION, 'undefined')
-        run: |
-          echo No release tag found - $RELEASE_VERSION
-          exit 1
+        run: echo No release tag found - $RELEASE_VERSION
 
       - name: Output release version
         shell: bash
@@ -133,12 +131,13 @@ jobs:
           echo "${{ inputs.version_ini_prefix }}$RELEASE_VERSION" > ${{ inputs.version_ini_path }}
 
       - uses: stefanzweifel/git-auto-commit-action@v4
-        if: inputs.version_ini_path != ''
+        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && inputs.version_ini_path != '' }}
         with:
           commit_message: "chore: update version"
           branch: ${{ steps.branch.outputs.BRANCH }}
 
       - name: Create release and tag
+        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') }}
         uses: ncipollo/release-action@v1
         with:
           name: 'Release ${{ env.RELEASE_VERSION }}'
