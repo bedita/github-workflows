@@ -131,7 +131,7 @@ Usage example of caller workflow:
 name: 'release'
 
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
 
 jobs:
