@@ -45,7 +45,7 @@ jobs:
 
       - name: Retrieve last tag on branch
         run: |
-          echo "::set-output name=TAG_NAME::$(git describe --tags --abbrev=0 | cut -c 2-)"
+          echo "::set-output name=TAG_NAME::$(git describe --tags --match "v*.*.*" --abbrev=0 | cut -c 2-)"
         id: last_tag
 
       - name: Debug last tag
