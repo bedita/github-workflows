@@ -1,0 +1,22 @@
+name: 'do-release'
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+
+  release_job:
+    uses: bedita/github-workflows/.github/workflows/release.yml@v1
+    with:
+      main_branch: 'master'
+      dist_branches: '["master"]'
+
+  other_job:
+    runs-on: 'ubuntu-latest'
+    needs: release_job
+    steps:
+
+      - name: Debug output version
+        run: |
+          echo version var ${{ needs.release_job.outputs.version }}
