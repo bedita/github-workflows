@@ -9,8 +9,8 @@ jobs:
   release_job:
     uses: bedita/github-workflows/.github/workflows/release.yml@v1
     with:
-      main_branch: 'master'
-      dist_branches: '["master"]'
+      main_branch: 'main'
+      dist_branches: '["main"]'
 
   other_job:
     runs-on: 'ubuntu-latest'
