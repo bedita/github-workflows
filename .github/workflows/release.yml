@@ -26,6 +26,7 @@ on:
 jobs:
 
   debug:
+    if: github.event.pull_request.merged
     runs-on: 'ubuntu-latest'
     steps:
       - name: Dump GitHub context
