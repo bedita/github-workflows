@@ -99,7 +99,7 @@ jobs:
           echo "RELEASE_VERSION=undefined" >> $GITHUB_ENV
 
       - name: See if major release
-        if: contains(github.event.pul_request.labels.*.name, 'release:major') 
+        if: contains(github.event.pull_request.labels.*.name, 'release:major') 
         run: |
           echo "RELEASE_VERSION=${{ steps.versions.outputs.NEW_MAJOR }}" >> $GITHUB_ENV
 
