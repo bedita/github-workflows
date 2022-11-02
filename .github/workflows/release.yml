@@ -23,6 +23,10 @@ on:
       version:
         description: The final release version
         value: ${{ jobs.release-on-push.outputs.version }}
+      major:
+        description: The release major version number
+        value: ${{ jobs.release-on-push.outputs.major }}
+
 jobs:
 
   debug:
@@ -125,7 +129,18 @@ jobs:
       - name: Debug release version
         run: |
           echo release version ${{ steps.version_release.outputs.VERSION }}
-      
+
+      - uses: jungwinter/split@v2
+        id: split_new
+        with:
+          msg: '${{ steps.version_release.outputs.VERSION }}'
+          separator: '.'
+          maxsplit: 3
+
+      - name: Debug major release of new version
+        run: |
+          echo major release ${{ steps.split_new.outputs._0 }}
+
       - name: Create new version file
         if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && inputs.version_ini_path != '' }}
         run: |
@@ -148,3 +163,4 @@ jobs:
 
     outputs:
       version: ${{ steps.version_release.outputs.VERSION }}
+      major: ${{ steps.split_new.outputs._0 }}
