@@ -27,7 +27,7 @@ jobs:
 
       - name: 'Discover Composer cache directory'
         id: 'cachedir'
-        run: 'echo "::set-output name=path::$(composer global config cache-dir)"'
+        run: echo "path=$(composer global config cache-dir)" >> $GITHUB_OUTPUT
 
       - name: 'Share Composer cache across runs'
         uses: 'actions/cache@v2'
@@ -68,7 +68,7 @@ jobs:
 
       - name: 'Discover Composer cache directory'
         id: 'cachedir'
-        run: 'echo "::set-output name=path::$(composer global config cache-dir)"'
+        run: echo "path=$(composer global config cache-dir)" >> $GITHUB_OUTPUT
 
       - name: 'Share Composer cache across runs'
         uses: 'actions/cache@v2'
@@ -136,7 +136,7 @@ jobs:
 
       - name: 'Discover Composer cache directory'
         id: 'cachedir'
-        run: 'echo "::set-output name=path::$(composer global config cache-dir)"'
+        run: echo "path=$(composer global config cache-dir)" >> $GITHUB_OUTPUT
 
       - name: 'Share Composer cache across runs'
         uses: 'actions/cache@v2'
