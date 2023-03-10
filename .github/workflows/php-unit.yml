@@ -97,13 +97,13 @@ jobs:
           filename: 'clover.xml'
 
       - name: 'Export coverage results'
-        uses: 'codecov/codecov-action@v1'
+        uses: 'codecov/codecov-action@v3'
         with:
-          file: './clover.xml'
+          files: './clover.xml'
           env_vars: PHP_VERSION
 
       - name: 'Archive code coverage results'
-        uses: 'actions/upload-artifact@v2'
+        uses: 'actions/upload-artifact@v3'
         with:
           name: 'PHP ${{ matrix.php }}'
           path: 'clover.xml'
