@@ -11,6 +11,10 @@ on:
         required: true
         description: Branches to execute on, in format of a string JSON array
         type: string
+      version_bump:
+        required: false
+        description: Version bump (patch, minor, or major), or leave blank to infer from PR labels
+        type: string
       version_ini_path:
         required: false
         description: Path to version.ini file (optional)
@@ -30,7 +34,7 @@ on:
 jobs:
 
   debug:
-    if: github.event.pull_request.merged
+    if: github.event.pull_request.merged || inputs.version_bump != ''
     runs-on: 'ubuntu-latest'
     steps:
       - name: Dump GitHub context
@@ -40,7 +44,7 @@ jobs:
           echo "$GITHUB_CONTEXT"
 
   release-on-push:
-    if: github.event.pull_request.merged
+    if: github.event.pull_request.merged || inputs.version_bump != ''
     runs-on: 'ubuntu-latest'
     steps:
       - name: Checkout Code
@@ -88,7 +92,7 @@ jobs:
         run: |
           echo current branch ${{ steps.branch.outputs.BRANCH }}
       - name: Exit on bad tag
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'release:major') && !contains(steps.branch.outputs.BRANCH, inputs.main_branch) }}
+        if: ${{ (inputs.version_bump == 'major' || (inputs.version_bump == '' && contains(github.event.pull_request.labels.*.name, 'release:major'))) && !contains(steps.branch.outputs.BRANCH, inputs.main_branch) }}
         run: |
           echo Can't create a major release on branch ${{ steps.branch.outputs.BRANCH }}
           exit 1
@@ -103,17 +107,17 @@ jobs:
           echo "RELEASE_VERSION=undefined" >> $GITHUB_ENV
 
       - name: See if major release
-        if: contains(github.event.pull_request.labels.*.name, 'release:major') 
+        if: inputs.version_bump == 'major' || (inputs.version_bump == '' && contains(github.event.pull_request.labels.*.name, 'release:major'))
         run: |
           echo "RELEASE_VERSION=${{ steps.versions.outputs.NEW_MAJOR }}" >> $GITHUB_ENV
 
       - name: See if minor release
-        if: contains(github.event.pull_request.labels.*.name, 'release:minor')
+        if: inputs.version_bump == 'minor' || (inputs.version_bump == '' && contains(github.event.pull_request.labels.*.name, 'release:minor'))
         run: |
           echo "RELEASE_VERSION=${{ steps.versions.outputs.NEW_MINOR }}" >> $GITHUB_ENV
 
       - name: See if patch release
-        if: contains(github.event.pull_request.labels.*.name, 'release:patch')
+        if: inputs.version_bump == 'patch' || (inputs.version_bump == '' && contains(github.event.pull_request.labels.*.name, 'release:patch'))
         run: |
           echo "RELEASE_VERSION=${{ steps.versions.outputs.NEW_PATCH }}" >> $GITHUB_ENV
 

@@ -122,6 +122,7 @@ Input parameters:
 
 * `main_branch` - (mandatory) name of the branch where a new major version is allowed, in other branches major version creation will fail
 * `dist_branches` - (mandatory, array in JSON format) name of the branches where a new automatic releae will be created
+* `version_bump` - (optional) type of version bump requested (`patch`, `minor`, `major`) or leave blank (empty string) to automatically infer from Pull Request labels
 * `version_ini_path` - (optional) path of a version file in `.ini` format where the new version should be saved, this file will be pushed to the working branch
 * `version_ini_prefix` - (optional) content of version `.ini` file where the new version will be appended
 
@@ -133,6 +134,14 @@ name: 'release'
 on:
   pull_request_target:
     types: [closed]
+  workflow_dispatch:
+    inputs:
+      releaseType:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options: [patch, minor, major]
 
 jobs:
 
@@ -141,6 +150,7 @@ jobs:
     with:
       main_branch: 'master'
       dist_branches: '["master", "1.x"]'
+      version_bump: ${{ inputs.releaseType }}
       version_ini_path: config/version.ini
       version_ini_prefix: "[MyApp]\nversion = "
 
