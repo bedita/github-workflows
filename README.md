@@ -83,6 +83,7 @@ on:
 ## php-unit.yml
 
 Phpunit checks on specified php versions and bedita versions.
+Parameter `coverage_min_percentage` can be used to specify minimum required coverage to pass tests (default is 85).
 
 Usage:
 
@@ -106,12 +107,14 @@ on:
     with:
       php_versions: '["7.4"]'
       bedita_version: '4.7.1'
+      coverage_min_percentage: 70
 
   unit-5:
     uses: bedita/github-workflows/.github/workflows/php-unit.yml@v1
     with:
       php_versions: '["7.4","8.0","8.1"]'
       bedita_version: '5.0.0'
+      coverage_min_percentage: 70
 ```
 
 ## release.yml
