@@ -11,6 +11,11 @@ on:
         description: BEdita version to use, bedita/bedita docker release 
         required: true
         type: string
+      coverage_min_percentage:
+        description: Minimum coverage percentage to pass the test
+        required: false
+        type: number
+        default: 85
 
 jobs:
 
@@ -93,7 +98,7 @@ jobs:
         id: test-coverage
         uses: johanvanhelden/gha-clover-test-coverage-check@v1
         with:
-          percentage: '85'
+          percentage: '${{ inputs.coverage_min_percentage }}'
           filename: 'clover.xml'
 
       - name: 'Export coverage results'
