@@ -150,6 +150,16 @@ jobs:
         run: |
           echo "${{ inputs.version_ini_prefix }}$RELEASE_VERSION" > ${{ inputs.version_ini_path }}
 
+      - name: Update package.json version
+        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') }}
+        uses: jossef/action-set-json-field@v2.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: package.json
+          field: version
+          value: ${{ env.RELEASE_VERSION }}
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && inputs.version_ini_path != '' }}
         with:
