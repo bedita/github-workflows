@@ -150,7 +150,7 @@ jobs:
         run: |
           echo "${{ inputs.version_ini_prefix }}$RELEASE_VERSION" > ${{ inputs.version_ini_path }}
 
-      - name: Check file existence
+      - name: Check package.json file existence
         id: check_files
         uses: andstor/file-existence-action@v2
         with:
