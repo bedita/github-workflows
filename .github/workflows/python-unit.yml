@@ -51,4 +51,4 @@ jobs:
         run: pip install pytest
 
       - name: Run pytest
-        run: pytest tests/sample.py -v -s
+        run: pytest tests/*.py -v -s
