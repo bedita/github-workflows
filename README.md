@@ -47,6 +47,7 @@ on:
       - '.github/workflows/cs.yml'
       - 'composer.json'
 
+jobs:
   cs:
     uses: bedita/github-workflows/.github/workflows/php-cs.yml@v1
     with:
@@ -74,6 +75,7 @@ on:
       - '.github/workflows/stan.yml'
       - 'composer.json'
 
+jobs:
   stan:
     uses: bedita/github-workflows/.github/workflows/php-stan.yml@v1
     with:
@@ -102,6 +104,7 @@ on:
       - '.github/workflows/unit.yml'
       - 'composer.json'
 
+jobs:
   unit-4:
     uses: bedita/github-workflows/.github/workflows/php-unit.yml@v1
     with:
@@ -136,6 +139,7 @@ on:
       - '**/*.php'
       - '.github/workflows/cs.yml'
 
+jobs:
   cs:
     uses: bedita/github-workflows/.github/workflows/python-cs.yml@v1
     with:
@@ -162,6 +166,7 @@ on:
       - '.github/workflows/unit.yml'
       - 'composer.json'
 
+jobs:
   unit:
     uses: bedita/github-workflows/.github/workflows/python-unit.yml@v1
     with:
