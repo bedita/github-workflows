@@ -153,7 +153,7 @@ jobs:
         run: |
           echo major release ${{ steps.split_new.outputs._0 }}
 
-      - name: Create new version file (optional)
+      - name: Create new version file with .ini format (optional)
         if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && inputs.version_ini_path != '' }}
         run: |
           echo "${{ inputs.version_ini_prefix }}$RELEASE_VERSION" > ${{ inputs.version_ini_path }}
