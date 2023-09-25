@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: ${{ fromJSON(inputs.python_versions) }}
+        python-version: ${{ fromJSON(inputs.python_versions) }}
 
     steps:
 
