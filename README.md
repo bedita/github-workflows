@@ -117,6 +117,58 @@ on:
       coverage_min_percentage: 70
 ```
 
+## python-cs.yml
+
+Python styles and linting checks on specified python versions.
+
+Usage:
+
+```yaml
+name: 'cs'
+
+on:
+  pull_request:
+    paths:
+      - '**/*.py'
+      - '.github/workflows/cs.yml'
+  push:
+    paths:
+      - '**/*.php'
+      - '.github/workflows/cs.yml'
+
+  cs:
+    uses: bedita/github-workflows/.github/workflows/python-cs.yml@v1
+    with:
+      python_versions: '["3.10", "3.11"]'
+```
+
+## python-unit.yml
+
+Python unit tests checks on specified python versions.
+
+Usage:
+
+```yaml
+name: 'unit'
+
+on:
+  pull_request:
+    paths:
+      - '**/*.py'
+      - '.github/workflows/unit.yml'
+  push:
+    paths:
+      - '**/*.py'
+      - '.github/workflows/unit.yml'
+      - 'composer.json'
+
+  unit:
+    uses: bedita/github-workflows/.github/workflows/python-unit.yml@v1
+    with:
+      python_versions: '["3.10","3.11"]'
+```
+
+
 ## release.yml
 
 Reusable workflow to create releases via Pull Requests merge, when PRs use labels `release:major`, `release:minor`, `release:patch`.
