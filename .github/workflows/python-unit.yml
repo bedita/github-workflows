@@ -9,8 +9,8 @@ on:
         type: string
 
 jobs:
-  cs:
-    name: 'Check coding style'
+  unit:
+    name: 'Check unit tests'
     if: "!contains(github.event.commits[0].message, '[skip ci]') && !contains(github.event.commits[0].message, '[ci skip]')"
     runs-on: 'ubuntu-latest'
 
