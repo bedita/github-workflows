@@ -164,7 +164,6 @@ on:
     paths:
       - '**/*.py'
       - '.github/workflows/unit.yml'
-      - 'composer.json'
 
 jobs:
   unit:
