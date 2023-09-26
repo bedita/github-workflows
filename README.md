@@ -184,6 +184,9 @@ Input parameters:
 * `version_bump` - (optional) type of version bump requested (`patch`, `minor`, `major`) or leave blank (empty string) to automatically infer from Pull Request labels
 * `version_ini_path` - (optional) path of a version file in `.ini` format where the new version should be saved, this file will be pushed to the working branch
 * `version_ini_prefix` - (optional) content of version `.ini` file where the new version will be appended
+* `toml_conf_path` - (optional) path of a version file in `.toml` format where the new version should be saved, this file will be pushed to the working branch
+* `toml_conf_version_key` - (optional) content of version `.toml` file where the new version will be appended
+* `package_json_version` - (optional) boolean flag: true when you want to apply a package.json file version update
 
 Usage example of caller workflow:
 

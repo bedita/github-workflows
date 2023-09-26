@@ -31,6 +31,10 @@ on:
         required: false
         description: Version key in a TOML configuration file (optional)
         type: string
+      package_json_version:
+        required: false
+        description: Update package.json version (optional)
+        type: boolean
     outputs:
       version:
         description: The final release version
@@ -180,6 +184,22 @@ jobs:
           tag: 'v${{ env.RELEASE_VERSION }}'
           commit: ${{ steps.branch.outputs.BRANCH }}
           generateReleaseNotes: true
+
+      - name: Check package.json file existence
+        id: check_files
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "package.json"
+
+      - name: Update package.json version
+        if: steps.check_files.outputs.files_exists == 'true' && ${{ !contains(env.RELEASE_VERSION, 'undefined') && inputs.package_json_version == 'true' }}
+        uses: jossef/action-set-json-field@v2.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: package.json
+          field: version
+          value: ${{ env.RELEASE_VERSION }}
 
     outputs:
       version: ${{ steps.version_release.outputs.VERSION }}
