@@ -170,21 +170,6 @@ jobs:
           key: "${{ inputs.toml_conf_version_key }}"
           value: "${{ env.RELEASE_VERSION }}"
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && (inputs.version_ini_path != '' || inputs.toml_conf_path != '') }}
-        with:
-          commit_message: "chore: update version"
-          branch: ${{ steps.branch.outputs.BRANCH }}
-
-      - name: Create release and tag
-        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') }}
-        uses: ncipollo/release-action@v1
-        with:
-          name: 'Release ${{ env.RELEASE_VERSION }}'
-          tag: 'v${{ env.RELEASE_VERSION }}'
-          commit: ${{ steps.branch.outputs.BRANCH }}
-          generateReleaseNotes: true
-
       - name: Check package.json file existence
         id: check_files
         uses: andstor/file-existence-action@v2
@@ -200,6 +185,21 @@ jobs:
           file: package.json
           field: version
           value: ${{ env.RELEASE_VERSION }}
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && (inputs.version_ini_path != '' || inputs.toml_conf_path != '') }}
+        with:
+          commit_message: "chore: update version"
+          branch: ${{ steps.branch.outputs.BRANCH }}
+
+      - name: Create release and tag
+        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') }}
+        uses: ncipollo/release-action@v1
+        with:
+          name: 'Release ${{ env.RELEASE_VERSION }}'
+          tag: 'v${{ env.RELEASE_VERSION }}'
+          commit: ${{ steps.branch.outputs.BRANCH }}
+          generateReleaseNotes: true
 
     outputs:
       version: ${{ steps.version_release.outputs.VERSION }}
