@@ -177,7 +177,7 @@ jobs:
           files: "package.json"
 
       - name: Update package.json version
-        if: steps.check_files.outputs.files_exists == 'true' && ${{ !contains(env.RELEASE_VERSION, 'undefined') && inputs.package_json_version == 'true' }}
+        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && steps.check_files.outputs.files_exists == 'true' && inputs.package_json_version == 'true' }}
         uses: jossef/action-set-json-field@v2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
