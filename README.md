@@ -54,6 +54,34 @@ jobs:
       php_versions: '["7.4", "8.0", "8.1"]'
 ```
 
+## php-psalm.yml
+
+Psalm checks on specified php versions.
+
+Usage:
+
+```yaml
+name: 'psalm'
+
+on:
+  pull_request:
+    paths:
+      - '**/*.php'
+      - '.github/workflows/psalm.yml'
+      - 'composer.json'
+  push:
+    paths:
+      - '**/*.php'
+      - '.github/workflows/psalm.yml'
+      - 'composer.json'
+
+jobs:
+  psalm:
+    uses: bedita/github-workflows/.github/workflows/php-psalm.yml@v1
+    with:
+      php_versions: '["7.4", "8.0", "8.1"]'
+```
+
 ## php-stan.yml
 
 Phpstan checks on specified php versions.
