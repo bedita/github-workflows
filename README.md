@@ -76,7 +76,7 @@ on:
       - 'composer.json'
 
 jobs:
-  cs:
+  psalm:
     uses: bedita/github-workflows/.github/workflows/php-psalm.yml@v1
     with:
       php_versions: '["7.4", "8.0", "8.1"]'
