@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: 'Checkout current revision'
-        uses: 'actions/checkout@v3'
+        uses: 'actions/checkout@v4'
 
       - name: 'Setup PHP'
         uses: 'shivammathur/setup-php@v2'
@@ -36,7 +36,7 @@ jobs:
         run: echo "path=$(composer global config cache-dir)" >> $GITHUB_OUTPUT
 
       - name: 'Share Composer cache across runs'
-        uses: 'actions/cache@v3'
+        uses: 'actions/cache@v4'
         with:
           path: '${{ steps.cachedir.outputs.path }}'
           key: "composer-${{ github.job }}-${{ hashFiles('**/composer.json') }}"
