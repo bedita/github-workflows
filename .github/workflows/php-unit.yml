@@ -92,24 +92,24 @@ jobs:
         run: 'composer dump-autoload --classmap-authoritative --no-cache'
 
       - name: 'Run PHPUnit with coverage'
-        run: 'vendor/bin/phpunit --coverage-clover=clover.xml'
+        run: 'vendor/bin/phpunit --coverage-clover=${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml'
 
       - name: Check test coverage
         id: test-coverage
         uses: johanvanhelden/gha-clover-test-coverage-check@v1
         with:
           percentage: '${{ inputs.coverage_min_percentage }}'
-          filename: 'clover.xml'
+          filename: '${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml'
 
       - name: 'Export coverage results'
         uses: 'codecov/codecov-action@v4'
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # required
-          files: './clover.xml'
+          files: './${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml'
           env_vars: PHP_VERSION
 
       - name: 'Archive code coverage results'
-        uses: 'actions/upload-artifact@v3'
+        uses: 'actions/upload-artifact@v4'
         with:
-          name: 'PHP ${{ matrix.php }}'
-          path: 'clover.xml'
+          name: 'PHP-${{ matrix.php }}-strategy-job-index-${{ strategy.job-index }}'
+          path: '${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml'
