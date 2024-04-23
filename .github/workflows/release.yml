@@ -186,7 +186,7 @@ jobs:
           field: version
           value: ${{ env.RELEASE_VERSION }}
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && (inputs.version_ini_path != '' || inputs.toml_conf_path != '') }}
         with:
           commit_message: "chore: update version"
