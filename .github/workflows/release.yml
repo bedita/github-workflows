@@ -187,7 +187,7 @@ jobs:
           value: ${{ env.RELEASE_VERSION }}
 
       - uses: stefanzweifel/git-auto-commit-action@v5
-        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && (inputs.version_ini_path != '' || inputs.toml_conf_path != '') }}
+        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && (inputs.version_ini_path != '' || inputs.toml_conf_path != '' || inputs.package_json_version == 'true') }}
         with:
           commit_message: "chore: update version"
           branch: ${{ steps.branch.outputs.BRANCH }}
