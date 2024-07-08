@@ -33,8 +33,9 @@ on:
         type: string
       package_json_version:
         required: false
-        description: Update package.json version (optional)
-        type: boolean
+        description: Update package.json version (optional, use 'true' or 'false' as a string)
+        type: string
+        default: 'false'
     outputs:
       version:
         description: The final release version
@@ -183,7 +184,7 @@ jobs:
           echo inputs.package_json_version ${{ inputs.package_json_version }}
 
       - name: Update package.json version
-        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && steps.check_files.outputs.files_exists == 'true' && inputs.package_json_version == 'true' }}
+        if: ${{ steps.check_files.outputs.files_exists == 'true' && inputs.package_json_version == 'true' }}
         uses: jossef/action-set-json-field@v2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
