@@ -33,8 +33,9 @@ on:
         type: string
       package_json_version:
         required: false
-        description: Update package.json version (optional)
-        type: boolean
+        description: Update package.json version (optional, use 'true' or 'false' as a string)
+        type: string
+        default: 'false'
     outputs:
       version:
         description: The final release version
@@ -72,10 +73,11 @@ jobs:
       - name: Debug last tag
         run: |
           echo last tag ${{ steps.last_tag.outputs.TAG_NAME }}
+
       - uses: jungwinter/split@v2
         id: split
         with:
-          msg: '${{ steps.last_tag.outputs.TAG_NAME }}'
+          msg: ${{ steps.last_tag.outputs.TAG_NAME != '' && steps.last_tag.outputs.TAG_NAME || '0.0.0' }}
           separator: '.'
           maxsplit: 3
 
@@ -187,7 +189,7 @@ jobs:
           value: ${{ env.RELEASE_VERSION }}
 
       - uses: stefanzweifel/git-auto-commit-action@v5
-        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && (inputs.version_ini_path != '' || inputs.toml_conf_path != '') }}
+        if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && (inputs.version_ini_path != '' || inputs.toml_conf_path != '' || inputs.package_json_version == 'true') }}
         with:
           commit_message: "chore: update version"
           branch: ${{ steps.branch.outputs.BRANCH }}
