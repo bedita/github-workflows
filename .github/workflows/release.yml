@@ -66,9 +66,7 @@ jobs:
 
       - name: Retrieve last tag on branch
         run: |
-          export LAST_TAG="$(git describe --tags --match "v*.*.*" --abbrev=0 | cut -c 2-)" 
-          echo "TAG_NAME=${LAST_TAG:-0.0.0}" >> $GITHUB_OUPUT
-        id: last_tag
+          echo "TAG_NAME=$(git describe --tags --match "v*.*.*" --abbrev=0 | cut -c 2-)" >> $GITHUB_OUTPUT        id: last_tag
 
       - name: Debug last tag
         run: |
@@ -77,7 +75,7 @@ jobs:
       - uses: jungwinter/split@v2
         id: split
         with:
-          msg: '${{ steps.last_tag.outputs.TAG_NAME }}'
+          msg: ${{ steps.last_tag.outputs.TAG_NAME != '' && steps.last_tag.outputs.TAG_NAME || '0.0.0' }}
           separator: '.'
           maxsplit: 3
 
