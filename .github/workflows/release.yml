@@ -177,6 +177,11 @@ jobs:
         with:
           files: "package.json"
 
+      - name: Debug package.json vars
+        run: |
+          echo steps.check_files.outputs.files_exists ${{ steps.check_files.outputs.files_exists }}
+          echo inputs.package_json_version ${{ inputs.package_json_version }}
+
       - name: Update package.json version
         if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && steps.check_files.outputs.files_exists == 'true' && inputs.package_json_version == 'true' }}
         uses: jossef/action-set-json-field@v2.1
