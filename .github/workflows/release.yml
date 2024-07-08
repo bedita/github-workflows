@@ -66,12 +66,13 @@ jobs:
 
       - name: Retrieve last tag on branch
         run: |
-          echo "TAG_NAME=$(git describe --tags --match "v*.*.*" --abbrev=0 | cut -c 2-)" >> $GITHUB_OUTPUT
+          LAST_TAG=$(git describe --tags --match "v*.*.*" --abbrev=0  | cut -c 2-) && echo "TAG_NAME=${LAST_TAG:-0.0.0}" >> $GITHUB_ENV
         id: last_tag
 
       - name: Debug last tag
         run: |
           echo last tag ${{ steps.last_tag.outputs.TAG_NAME }}
+
       - uses: jungwinter/split@v2
         id: split
         with:
