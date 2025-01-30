@@ -13,7 +13,25 @@ updates:
     groups:
       gh-actions:
         patterns: ['actions/*']
-      docker:
-        patterns: ['docker/*']
+      andstor:
+        patterns: ['andstor/*']
+      bedita:
+        patterns: ['bedita/*']
       codecov:
         patterns: ['codecov/*']
+      colathro:
+        patterns: ['colathro/*']
+      johanvanhelden:
+        patterns: ['johanvanhelden/*']
+      jossef:
+        patterns: ['jossef/*']
+      jungwinter:
+        patterns: ['jungwinter/*']
+      ncipollo:
+        patterns: ['ncipollo/*']
+      shivammathur:
+        patterns: ['shivammathur/*']
+      snok:
+        patterns: ['snok/*']
+      stefanzweifel:
+        patterns: ['stefanzweifel/*']
