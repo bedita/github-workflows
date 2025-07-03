@@ -91,8 +91,14 @@ jobs:
       - name: 'Dump Composer autoloader'
         run: 'composer dump-autoload --classmap-authoritative --no-cache'
 
-      - name: 'Run PHPUnit with coverage'
-        run: 'vendor/bin/phpunit --coverage-clover=${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml'
+      - name: 'Run PHPUnit with coverage and JUnit report'
+        run: 'vendor/bin/phpunit --coverage-clover=${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml --log-junit ${{ matrix.php-version }}-${{ strategy.job-index }}-junit.xml'
+
+      - name: Upload test results to Codecov
+        uses: codecov/test-results-action@v1
+        with:
+          files: './${{ matrix.php-version }}-${{ strategy.job-index }}-junit.xml'
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Check test coverage
         id: test-coverage
