@@ -153,13 +153,16 @@ jobs:
       - name: 'Dump Composer autoloader'
         run: 'composer dump-autoload --classmap-authoritative --no-cache'
 
+      - name: 'Set file prefix in environment'
+        run: echo "FILE_PREFIX=${{ inputs.bedita_version }}-${{ matrix.php-version }}-${{ strategy.job-index }}" >> $GITHUB_ENV
+
       - name: 'Run PHPUnit with coverage and JUnit report'
-        run: 'vendor/bin/phpunit --coverage-clover=${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml --log-junit ${{ matrix.php-version }}-${{ strategy.job-index }}-junit.xml'
+        run: 'vendor/bin/phpunit --coverage-clover=${{ env.FILE_PREFIX }}-clover.xml --log-junit ${{ env.FILE_PREFIX }}-junit.xml'
 
       - name: Upload test results to Codecov
         uses: codecov/test-results-action@v1
         with:
-          files: './${{ matrix.php-version }}-${{ strategy.job-index }}-junit.xml'
+          files: './${{ env.FILE_PREFIX }}-junit.xml'
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Check test coverage
@@ -167,17 +170,17 @@ jobs:
         uses: johanvanhelden/gha-clover-test-coverage-check@v1
         with:
           percentage: '85'
-          filename: '${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml'
+          filename: '${{ env.FILE_PREFIX }}-clover.xml'
 
       - name: 'Export coverage results'
         uses: 'codecov/codecov-action@v5'
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # required
-          files: './${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml'
+          files: './${{ env.FILE_PREFIX }}-clover.xml'
           env_vars: PHP_VERSION
 
       - name: 'Archive code coverage results'
         uses: 'actions/upload-artifact@v4'
         with:
           name: 'PHP-${{ matrix.php-version }}-strategy-job-index-${{ strategy.job-index }}'
-          path: '${{ matrix.php-version }}-${{ strategy.job-index }}-clover.xml'
+          path: '${{ env.FILE_PREFIX }}-clover.xml'
