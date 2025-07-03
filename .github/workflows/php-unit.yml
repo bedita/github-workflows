@@ -92,7 +92,7 @@ jobs:
         run: 'composer dump-autoload --classmap-authoritative --no-cache'
 
       - name: 'Set file prefix in environment'
-        run: echo "FILE_PREFIX=${{ inputs.bedita_version }}-${{ matrix.php-version }}-${{ strategy.job-index }}" >> $GITHUB_ENV
+        run: echo "FILE_PREFIX=${{ github.run_id }}-${{ inputs.bedita_version }}-${{ matrix.php-version }}-${{ strategy.job-index }}" >> $GITHUB_ENV
 
       - name: 'Run PHPUnit with coverage and JUnit report'
         run: 'vendor/bin/phpunit --coverage-clover=${{ env.FILE_PREFIX }}-clover.xml --log-junit ${{ env.FILE_PREFIX }}-junit.xml'
