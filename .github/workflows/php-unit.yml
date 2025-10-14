@@ -120,5 +120,5 @@ jobs:
       - name: 'Archive code coverage results'
         uses: 'actions/upload-artifact@v4'
         with:
-          name: 'BEDITA-${{ inputs.bedita_version }}-PHP-${{ matrix.php-version }}-strategy-job-index-${{ strategy.job-index }}'
+          name: 'BEDITA-${{ inputs.bedita_version }}-PHP-${{ matrix.php-version }}-strategy-job-index-${{ strategy.job-index }}-${{ github.sha }}'
           path: '${{ env.FILE_PREFIX }}-clover.xml'
