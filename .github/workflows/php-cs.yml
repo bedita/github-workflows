@@ -47,4 +47,9 @@ jobs:
         run: 'composer install --prefer-dist --no-interaction'
 
       - name: 'Run PHP CodeSniffer'
-        run: vendor/bin/phpcs -n
+        run: |
+          if composer run --list | grep -q "cs-check"; then
+            composer run cs-check
+          else
+            vendor/bin/phpcs -n
+          fi
