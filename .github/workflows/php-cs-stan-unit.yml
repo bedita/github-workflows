@@ -46,7 +46,7 @@ jobs:
           if composer run --list | grep -q "cs-check"; then
             composer run cs-check
           else
-            vendor/bin/phpcs -n
+            vendor/bin/phpcs
           fi
 
   stan:
