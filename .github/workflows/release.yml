@@ -65,33 +65,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract branch name
-        shell: bash
-        run: echo "BRANCH=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
-        id: branch
-
-      - name: Debug branch name
-        run: |
-          echo current branch ${{ steps.branch.outputs.BRANCH }}
-
-      - name: Determine branch major version pattern
-        shell: bash
-        run: |
-          BRANCH="${{ steps.branch.outputs.BRANCH }}"
-          if [[ $BRANCH =~ ^([0-9]+)\.x$ ]]; then
-            echo "TAG_PATTERN=v${BASH_REMATCH[1]}.*.*" >> $GITHUB_OUTPUT
-            echo "Branch $BRANCH detected - will search for tags matching v${BASH_REMATCH[1]}.*.*"
-          else
-            echo "TAG_PATTERN=v*.*.*" >> $GITHUB_OUTPUT
-            echo "Non-versioned branch $BRANCH - will search for all tags"
-          fi
-        id: branch_version
-
       - name: Retrieve last tag on branch
         run: |
-          TAG_PATTERN="${{ steps.branch_version.outputs.TAG_PATTERN }}"
-          TAG=$(git describe --tags --match "$TAG_PATTERN" --abbrev=0 2>/dev/null | cut -c 2- || echo "")
-          echo "TAG_NAME=$TAG" >> $GITHUB_OUTPUT
+          echo "TAG_NAME=$(git describe --tags --match "v*.*.*" --abbrev=0 | cut -c 2-)" >> $GITHUB_OUTPUT
         id: last_tag
 
       - name: Debug last tag
@@ -121,6 +97,14 @@ jobs:
           echo new major ${{ steps.versions.outputs.NEW_MAJOR }}
           echo new minor ${{ steps.versions.outputs.NEW_MINOR }}
           echo new patch ${{ steps.versions.outputs.NEW_PATCH }}
+      - name: Extract branch name
+        shell: bash
+        run: echo "BRANCH=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+        id: branch
+
+      - name: Debug branch name
+        run: |
+          echo current branch ${{ steps.branch.outputs.BRANCH }}
       - name: Exit on bad tag
         if: ${{ (inputs.version_bump == 'major' || (inputs.version_bump == '' && contains(github.event.pull_request.labels.*.name, 'release:major'))) && !contains(steps.branch.outputs.BRANCH, inputs.main_branch) }}
         run: |
