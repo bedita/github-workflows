@@ -67,6 +67,7 @@ jobs:
 
       - name: Retrieve last tag on branch
         run: |
+          git checkout ${{ github.base_ref }}
           echo "TAG_NAME=$(git describe --tags --match "v*.*.*" --abbrev=0 | cut -c 2-)" >> $GITHUB_OUTPUT
         id: last_tag
 
