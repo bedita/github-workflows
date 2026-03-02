@@ -185,7 +185,7 @@ jobs:
           env_vars: PHP_VERSION
 
       - name: 'Archive code coverage results'
-        uses: 'actions/upload-artifact@v6'
+        uses: 'actions/upload-artifact@v7'
         with:
           name: 'PHP-${{ matrix.php-version }}-strategy-job-index-${{ strategy.job-index }}-${{ github.sha }}'
           path: '${{ env.FILE_PREFIX }}-clover.xml'
