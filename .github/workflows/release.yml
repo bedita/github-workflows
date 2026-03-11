@@ -98,23 +98,19 @@ jobs:
           echo new major ${{ steps.versions.outputs.NEW_MAJOR }}
           echo new minor ${{ steps.versions.outputs.NEW_MINOR }}
           echo new patch ${{ steps.versions.outputs.NEW_PATCH }}
-      - name: Extract branch name
-        shell: bash
-        run: echo "BRANCH=$(echo ${github.base_ref})" >> $GITHUB_OUTPUT
-        id: branch
 
       - name: Debug branch name
         run: |
-          echo current branch ${{ steps.branch.outputs.BRANCH }}
+          echo current branch ${{ github.base_ref }}
       - name: Exit on bad tag
-        if: ${{ (inputs.version_bump == 'major' || (inputs.version_bump == '' && contains(github.event.pull_request.labels.*.name, 'release:major'))) && !contains(steps.branch.outputs.BRANCH, inputs.main_branch) }}
+        if: ${{ (inputs.version_bump == 'major' || (inputs.version_bump == '' && contains(github.event.pull_request.labels.*.name, 'release:major'))) && !contains(github.base_ref, inputs.main_branch) }}
         run: |
-          echo Can't create a major release on branch ${{ steps.branch.outputs.BRANCH }}
+          echo Can't create a major release on branch ${{ github.base_ref }}
           exit 1
       - name: Exit on bad branch
-        if: ${{ !contains(fromJson(inputs.dist_branches), steps.branch.outputs.BRANCH) }}
+        if: ${{ !contains(fromJson(inputs.dist_branches), github.base_ref) }}
         run: |
-          echo Can't create a release on branch ${{ steps.branch.outputs.BRANCH }}
+          echo Can't create a release on branch ${{ github.base_ref }}
           exit 1
 
       - name: Prepare release tag env var
@@ -193,7 +189,7 @@ jobs:
         if: ${{ !contains(env.RELEASE_VERSION, 'undefined') && (inputs.version_ini_path != '' || inputs.toml_conf_path != '' || inputs.package_json_version == 'true') }}
         with:
           commit_message: "chore: update version"
-          branch: ${{ steps.branch.outputs.BRANCH }}
+          branch: ${{ github.base_ref }}
 
       - name: Create release and tag
         if: ${{ !contains(env.RELEASE_VERSION, 'undefined') }}
@@ -201,7 +197,7 @@ jobs:
         with:
           name: 'Release ${{ env.RELEASE_VERSION }}'
           tag: 'v${{ env.RELEASE_VERSION }}'
-          commit: ${{ steps.branch.outputs.BRANCH }}
+          commit: ${{ github.base_ref }}
           generateReleaseNotes: true
 
     outputs:
