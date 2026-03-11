@@ -69,7 +69,7 @@ jobs:
 
       - name: Retrieve last tag on branch
         run: |
-          git checkout "$TARGET_BRANCH"
+          git checkout "${{ env.TARGET_BRANCH }}"
           echo "TAG_NAME=$(git describe --tags --match "v*.*.*" --abbrev=0 | cut -c 2-)" >> $GITHUB_OUTPUT
         id: last_tag
 
@@ -103,16 +103,16 @@ jobs:
 
       - name: Debug branch name
         run: |
-          echo current branch $TARGET_BRANCH
+          echo current branch ${{ env.TARGET_BRANCH }}
       - name: Exit on bad tag
         if: ${{ (inputs.version_bump == 'major' || (inputs.version_bump == '' && contains(github.event.pull_request.labels.*.name, 'release:major'))) && !contains(env.TARGET_BRANCH, inputs.main_branch) }}
         run: |
-          echo Can't create a major release on branch $TARGET_BRANCH
+          echo Can't create a major release on branch ${{ env.TARGET_BRANCH }}
           exit 1
       - name: Exit on bad branch
         if: ${{ !contains(fromJson(inputs.dist_branches), env.TARGET_BRANCH) }}
         run: |
-          echo Can't create a release on branch $TARGET_BRANCH
+          echo Can't create a release on branch ${{ env.TARGET_BRANCH }}
           exit 1
 
       - name: Prepare release tag env var
