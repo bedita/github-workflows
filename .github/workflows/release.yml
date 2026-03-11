@@ -100,7 +100,7 @@ jobs:
           echo new patch ${{ steps.versions.outputs.NEW_PATCH }}
       - name: Extract branch name
         shell: bash
-        run: echo "BRANCH=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+        run: echo "BRANCH=$(echo ${github.base_ref})" >> $GITHUB_OUTPUT
         id: branch
 
       - name: Debug branch name
