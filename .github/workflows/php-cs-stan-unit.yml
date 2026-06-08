@@ -178,7 +178,7 @@ jobs:
           filename: '${{ env.FILE_PREFIX }}-clover.xml'
 
       - name: 'Export coverage results'
-        uses: 'codecov/codecov-action@v6'
+        uses: 'codecov/codecov-action@v7'
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # required
           files: './${{ env.FILE_PREFIX }}-clover.xml'
