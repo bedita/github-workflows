@@ -63,7 +63,7 @@ jobs:
       TARGET_BRANCH: ${{ github.base_ref || github.ref_name }}
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
