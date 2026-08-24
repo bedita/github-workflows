@@ -2,7 +2,7 @@
 
 ## php-cs-stan-unit.yml
 
-Reusable workflow that launches on an ubuntu-latest phpcs, phpstan and phpunit (with php 7.4, 8.0 and 8.1) checks.
+Reusable workflow that launches on an ubuntu-latest phpcs, phpstan and phpunit (with php 8.3, 8.4 and 8.5) checks.
 
 Usage example of caller workflow:
 
@@ -51,7 +51,7 @@ jobs:
   cs:
     uses: bedita/github-workflows/.github/workflows/php-cs.yml@v1
     with:
-      php_versions: '["7.4", "8.0", "8.1"]'
+      php_versions: '["8.3", "8.4", "8.5"]'
 ```
 
 ## php-psalm.yml
@@ -79,7 +79,7 @@ jobs:
   psalm:
     uses: bedita/github-workflows/.github/workflows/php-psalm.yml@v1
     with:
-      php_versions: '["7.4", "8.0", "8.1"]'
+      php_versions: '["8.3", "8.4", "8.5"]'
 ```
 
 ## php-stan.yml
@@ -107,7 +107,7 @@ jobs:
   stan:
     uses: bedita/github-workflows/.github/workflows/php-stan.yml@v1
     with:
-      php_versions: '["7.4", "8.0", "8.1"]'
+      php_versions: '["8.3", "8.4", "8.5"]'
 ```
 
 ## php-unit.yml
@@ -141,10 +141,17 @@ jobs:
       coverage_min_percentage: 70
 
   unit-5:
-    uses: bedita/github-workflows/.github/workflows/php-unit.yml@v1
+    uses: bedita/github-workflows/.github/workflows/php-unit.yml@v2
     with:
-      php_versions: '["7.4","8.0","8.1"]'
-      bedita_version: '5.0.0'
+      php_versions: '["8.3","8.4"]'
+      bedita_version: '5'
+      coverage_min_percentage: 70
+
+  unit-6:
+    uses: bedita/github-workflows/.github/workflows/php-unit.yml@v2
+    with:
+      php_versions: '["8.4", "8.5"]'
+      bedita_version: '6'
       coverage_min_percentage: 70
 ```
 
