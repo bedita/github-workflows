@@ -1,5 +1,28 @@
 # github-workflows
 
+## php-cs-psalm-stan-unit.yml
+
+Runs PHP CodeSniffer, Psalm, PHPStan, and PHPUnit sequentially in one job for each
+PHP version. Checkout, PHP setup, Composer cache restoration, and dependency
+installation are shared by all checks.
+
+Usage:
+
+```yaml
+jobs:
+  cs-psalm-stan-unit:
+    uses: bedita/github-workflows/.github/workflows/php-cs-psalm-stan-unit.yml@v2
+    with:
+      php_versions: '["8.5"]'
+      databases: >-
+        [{"vendor":"SQLite","pdo":"sqlite","dsn":"sqlite://tmp/test.sql","image":"nginx:alpine","options":"--health-cmd \"/bin/true\" --health-interval 1s --health-timeout 2s --health-retries 5"},{"vendor":"PostgreSQL 18","pdo":"pgsql","dsn":"postgres://bedita:bedita@127.0.0.1:5432/bedita","image":"postgres:18","options":"--health-cmd \"pg_isready\" --health-interval 10s --health-timeout 5s --health-retries 5"}]
+      coverage_min_percentage: 85
+    secrets: inherit
+```
+
+Only `php_versions` is required. When `databases` is omitted, PHPUnit and the
+coverage steps are skipped. `coverage_min_percentage` defaults to `85`.
+
 ## php-cs-stan-unit.yml
 
 Reusable workflow that launches on an ubuntu-latest phpcs, phpstan and phpunit (with php 8.3, 8.4 and 8.5) checks.
