@@ -98,8 +98,9 @@ jobs:
         run: 'vendor/bin/phpunit --coverage-clover=${{ env.FILE_PREFIX }}-clover.xml --log-junit ${{ env.FILE_PREFIX }}-junit.xml'
 
       - name: Upload test results to Codecov
-        uses: codecov/test-results-action@v1
+        uses: codecov/codecov-action@v7
         with:
+          report_type: test_results
           files: './${{ env.FILE_PREFIX }}-junit.xml'
           token: ${{ secrets.CODECOV_TOKEN }}
 
